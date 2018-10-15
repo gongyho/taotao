@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://code.alibabatech.com/schema/dubbo 
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!-- 包扫描 -->
+	<context:component-scan base-package="com.taotao.service"/>
+	
+	<!-- 使用dubbo发布服务 -->	
+	<!-- 提供方信息，name：是服务提供方的名字 用来计算依赖关系 计算依赖调用次数 -->
+	<dubbo:application name="taotao-manager"/>
+	<dubbo:registry protocol="zookeeper" address="192.168.37.132:2181"/>
+	<!-- 使用dubbo协议再20880暴露服务 在本机 -->
+	<dubbo:protocol name="dubbo" port="20880"/>
+	
+	<!-- 声明要暴露的服务 -->
+	<dubbo:service interface="com.taotao.service.TestService" ref="testServiceImpl"/>
+	<dubbo:service interface="com.taotao.service.ItemService" ref="itemServiceImpl"/>
+</beans>
