@@ -9,7 +9,7 @@ import com.taotao.common.pojo.EasyUiDatagridResult;
 import com.taotao.service.ItemService;
 
 @Controller
-@RequestMapping("item")
+@RequestMapping("/item")
 public class ItemController {
 	@Autowired
 	private ItemService itemService;
@@ -17,7 +17,7 @@ public class ItemController {
 	 * 	返回分页查询商品json数据
 	 * @return
 	 */
-	@RequestMapping("list")
+	@RequestMapping("/list")
 	@ResponseBody
 	public EasyUiDatagridResult itemList(Integer page,Integer rows) {
 		return itemService.getItemList(page, rows);

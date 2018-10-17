@@ -3,7 +3,7 @@ package com.taotao.common.pojo;
 import java.io.Serializable;
 
 /**
- * easyui 属性控件属性
+ * easyui 树形控件属性封装
  * @author GongYuHao
  *
  */
