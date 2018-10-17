@@ -4,6 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class TbItem implements Serializable{
+	/**
+	 * 正常
+	 */
+	public static final Byte STATUS_OK=1;
+	/**
+	 * 已下架
+	 */
+	public static final Byte STATUS_OUT=2;
+	/**
+	 * 已删除
+	 */
+	public static final Byte STATUS_DEL=3;
     private Long id;
 
     private String title;
