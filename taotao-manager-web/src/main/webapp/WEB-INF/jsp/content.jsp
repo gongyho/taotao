@@ -43,6 +43,7 @@ var contentListToolbar = [{
     iconCls:'icon-add',
     handler:function(){
     	var node = $("#contentCategoryTree").tree("getSelected");
+    	//判断是否选择节点  并且节点为叶子节点
     	if(!node || !$("#contentCategoryTree").tree("isLeaf",node.target)){
     		$.messager.alert('提示','新增内容必须选择一个内容分类!');
     		return ;

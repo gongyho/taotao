@@ -52,4 +52,5 @@
 	<dubbo:reference interface="com.taotao.service.ItemCatService" id="itemCatService"/>
 	<dubbo:reference interface="com.taotao.service.PictureService" id="pictureService" />
 	<dubbo:reference interface="com.taotao.service.ContentCategortyService" id="contentCategortyService" />
+	<dubbo:reference interface="com.taotao.service.ContentService" id="contentService" />
 </beans>

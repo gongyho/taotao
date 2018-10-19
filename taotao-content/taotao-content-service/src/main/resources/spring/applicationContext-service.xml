@@ -30,4 +30,5 @@ http://code.alibabatech.com/schema/dubbo
 	
 	<!-- 声明要暴露的服务 -->
 	<dubbo:service interface="com.taotao.service.ContentCategortyService" ref="contentCategoryServiceImpl"/>
+	<dubbo:service interface="com.taotao.service.ContentService" ref="contentServiceImpl"/>
 </beans>
