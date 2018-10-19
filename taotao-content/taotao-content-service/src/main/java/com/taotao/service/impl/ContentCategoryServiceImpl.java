@@ -75,7 +75,7 @@ public class ContentCategoryServiceImpl implements ContentCategortyService {
 	 */
 	public void deleteContentCategory(Long parentId, Long id) {
 		// 删除的节点有直接点 递归删除
-		deleteR(id);
+		deleteR(tbContentCategoryMapper.selectByPrimaryKey(id));
 
 		// 如果父节点没有子节点
 		TbContentCategoryExample example = new TbContentCategoryExample();
@@ -105,18 +105,19 @@ public class ContentCategoryServiceImpl implements ContentCategortyService {
 	 * 递归删除
 	 * @param id 要删除的id
 	 */
-	private void deleteR(Long id) {
-		// 如果删除的节点为父节点jn
-		TbContentCategoryExample example = new TbContentCategoryExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andParentIdEqualTo(id);
-		List<TbContentCategory> childNodeList = tbContentCategoryMapper.selectByExample(example);
-		if (childNodeList.size() > 0) {
-			for (TbContentCategory  childNode: childNodeList) {
-				deleteR(childNode.getId());//递归
-				tbContentCategoryMapper.deleteByPrimaryKey(childNode.getId());
+	private void deleteR(TbContentCategory node) {
+		// 如果删除的节点为父节点
+		if(node.getIsParent()) {
+			TbContentCategoryExample example = new TbContentCategoryExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andParentIdEqualTo(node.getId());
+			List<TbContentCategory> childNodeList = tbContentCategoryMapper.selectByExample(example);
+			if (childNodeList.size() > 0) {
+				for (TbContentCategory  childNode: childNodeList) {
+					deleteR(childNode);//递归
+					tbContentCategoryMapper.deleteByPrimaryKey(childNode.getId());
+				}
 			}
 		}
 	}
-
 }
