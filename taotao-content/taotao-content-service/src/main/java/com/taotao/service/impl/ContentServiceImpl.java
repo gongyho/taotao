@@ -42,11 +42,29 @@ public class ContentServiceImpl implements ContentService{
 		return result;
 	}
 
-	@Override
+	/**
+	 * 添加
+	 */
 	public void addContent(TbContent content) {
 		content.setId(IDUtil.generateItemId());
 		content.setCreated(new Date());
 		content.setUpdated(new Date());
 		tbContentMapper.insertSelective(content);
+	}
+	/**
+	 * 删除
+	 */
+	public void deleteContent(String[] id) {
+		for (int i = 0; i < id.length; i++) {
+			tbContentMapper.deleteByPrimaryKey(Long.valueOf(id[i]));
+		}
+	}
+
+	/**
+	 * 编辑
+	 */
+	public void updateContent(TbContent content) {
+		content.setUpdated(new Date());
+		tbContentMapper.updateByPrimaryKeySelective(content);
 	}
 }

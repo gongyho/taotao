@@ -19,4 +19,14 @@ public interface ContentService {
 	 * @param content
 	 */
 	void addContent(TbContent content);
+	/**
+	 * 删除内容
+	 * @param id
+	 */
+	void deleteContent(String[] id);
+	/**
+	 * 编辑内容
+	 * @param content
+	 */
+	void updateContent(TbContent content);
 }

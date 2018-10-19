@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -52,6 +53,32 @@ public class ContentCentroller {
 			
 			e.printStackTrace();
 			return TaotaoResult.build(500, "添加失败！");
+		}
+	}
+	
+	@RequestMapping("/delete")
+	@ResponseBody
+	public TaotaoResult deleteContent(String ids) {
+		String[] id =ids.split(",");
+		try {
+			contentService.deleteContent(id);
+			return TaotaoResult.ok();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return TaotaoResult.build(500, "删除失败！");
+		}
+	}
+	
+	@RequestMapping("/edit")
+	@ResponseBody
+	public TaotaoResult updateContent(TbContent content) {
+		try {
+			contentService.updateContent(content);
+			return TaotaoResult.ok();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return TaotaoResult.build(500, "编辑失败！");
 		}
 	}
 }
