@@ -4,6 +4,7 @@
     </ul>
 </div>
 <div id="contentCategoryMenu" class="easyui-menu" style="width:120px;" data-options="onClick:menuHandler">
+    
     <div data-options="iconCls:'icon-add',name:'add'">添加</div>
     <div data-options="iconCls:'icon-remove',name:'rename'">重命名</div>
     <div class="menu-sep"></div>
@@ -16,8 +17,10 @@ $(function(){
 		animate: true,
 		method : "GET",
 		onContextMenu: function(e,node){
+			//关闭鼠标默认事件
             e.preventDefault();
             $(this).tree('select',node.target);
+            //在鼠标所在的位置显示
             $('#contentCategoryMenu').menu('show',{
                 left: e.pageX,
                 top: e.pageY
@@ -43,6 +46,11 @@ $(function(){
         }
 	});
 });
+
+/**
+ * 1== 1 true 1=="1" true
+ 	1===1 true 1==="1" false
+ */
 function menuHandler(item){
 	var tree = $("#contentCategory");
 	var node = tree.tree("getSelected");
@@ -62,7 +70,7 @@ function menuHandler(item){
 	}else if(item.name === "delete"){
 		$.messager.confirm('确认','确定删除名为 '+node.text+' 的分类吗？',function(r){
 			if(r){
-				$.post("/content/category/delete/",{parentId:node.parentId,id:node.id},function(){
+				$.post("/content/category/delete",{parentId:node.parentId,id:node.id},function(){
 					tree.tree("remove",node.target);
 				});	
 			}

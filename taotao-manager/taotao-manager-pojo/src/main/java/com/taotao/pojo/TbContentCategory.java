@@ -3,6 +3,14 @@ package com.taotao.pojo;
 import java.util.Date;
 
 public class TbContentCategory {
+	/**
+	 * 正常
+	 */
+	public static final Integer STATUS_OK=1;
+	/**
+	 * 删除
+	 */
+	public static final Integer STATUS_DEL=2;
     private Long id;
 
     private Long parentId;
