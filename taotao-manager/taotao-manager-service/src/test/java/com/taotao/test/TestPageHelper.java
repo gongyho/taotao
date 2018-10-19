@@ -1,4 +1,4 @@
-package com.taotao.test.pagehelper;
+package com.taotao.test;
 
 public class TestPageHelper {
 	/*@Test
