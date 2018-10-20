@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.taotao.common.jedis.JedisClient;
 import com.taotao.common.pojo.EasyUiDatagridResult;
 import com.taotao.common.utils.IDUtil;
+import com.taotao.common.utils.JsonUtils;
 import com.taotao.mapper.TbContentMapper;
 import com.taotao.pojo.TbContent;
 import com.taotao.pojo.TbContentExample;
@@ -25,7 +28,13 @@ import com.taotao.service.ContentService;
 public class ContentServiceImpl implements ContentService{
 	@Autowired
 	private TbContentMapper tbContentMapper;
-	
+	@Value("${CONTENT_KEY}")
+	private String CONTENT_KEY; //内容缓存的key
+	@Autowired
+	private JedisClient jedisClient;
+	/**
+	 * 根据分类获取内容 分页
+	 */
 	public EasyUiDatagridResult getContentByCategory(Long id, Integer page, Integer rows) {
 		//设置分页
 		PageHelper.startPage(page, rows);
@@ -68,11 +77,35 @@ public class ContentServiceImpl implements ContentService{
 		tbContentMapper.updateByPrimaryKeySelective(content);
 	}
 
-	@Override
+	/**
+	 * 通过分类id 获取内容
+	 */
 	public List<TbContent> getContentByCategory(Long categoryId) {
+		//尝试缓存取  不能影响正常 流程
+		try {
+			if(jedisClient.hexists(CONTENT_KEY, categoryId.toString())) {
+				String json =jedisClient.hget(CONTENT_KEY, categoryId.toString());
+				System.out.println("缓存中取数据-------------------------------------------------------------------------------");
+				return JsonUtils.jsonToList(json, TbContent.class);
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		
 		TbContentExample example=new TbContentExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andCategoryIdEqualTo(categoryId);
-		return tbContentMapper.selectByExample(example);
+		 List<TbContent> contentList = tbContentMapper.selectByExample(example);
+		
+		//写入缓存  不能影响正常业务  要try
+		try {
+			jedisClient.hset(CONTENT_KEY, categoryId.toString(), JsonUtils.objectToJson(contentList));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("数据库取数据-------------------------------------------------------------------------------");
+		return contentList;
 	}
 }
