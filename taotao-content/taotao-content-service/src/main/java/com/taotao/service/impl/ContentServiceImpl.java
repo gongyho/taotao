@@ -67,4 +67,12 @@ public class ContentServiceImpl implements ContentService{
 		content.setUpdated(new Date());
 		tbContentMapper.updateByPrimaryKeySelective(content);
 	}
+
+	@Override
+	public List<TbContent> getContentByCategory(Long categoryId) {
+		TbContentExample example=new TbContentExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andCategoryIdEqualTo(categoryId);
+		return tbContentMapper.selectByExample(example);
+	}
 }

@@ -15,7 +15,7 @@ http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx.xsd
 http://code.alibabatech.com/schema/dubbo 
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-    <!-- 加载ftp配置文件 --> 
+    <!-- 加载配置文件 --> 
     <context:property-placeholder location="classpath*:properties/*.properties"/>
    <!--  <context:property-placeholder location="classpath:properties/fastdfs.properties"/> -->
 	<!-- 包扫描 -->
