@@ -59,14 +59,25 @@ public class ContentServiceImpl implements ContentService{
 		content.setCreated(new Date());
 		content.setUpdated(new Date());
 		tbContentMapper.insertSelective(content);
+		
+		//清空缓存
+		jedisClient.hdel(CONTENT_KEY, content.getCategoryId().toString());
+		System.out.println("-------------------------清缓存---------------------------------");
 	}
 	/**
 	 * 删除
 	 */
 	public void deleteContent(String[] id) {
+		//获取分类id 用来清缓存
+		Long categoryId = tbContentMapper.selectByPrimaryKey(Long.valueOf(id[0])).getCategoryId();
+		
 		for (int i = 0; i < id.length; i++) {
 			tbContentMapper.deleteByPrimaryKey(Long.valueOf(id[i]));
 		}
+		
+		//清空缓存
+		jedisClient.hdel(CONTENT_KEY, categoryId.toString());
+		System.out.println("-------------------------清缓存---------------------------------");
 	}
 
 	/**
@@ -75,6 +86,9 @@ public class ContentServiceImpl implements ContentService{
 	public void updateContent(TbContent content) {
 		content.setUpdated(new Date());
 		tbContentMapper.updateByPrimaryKeySelective(content);
+		
+		jedisClient.hdel(CONTENT_KEY, content.getCategoryId().toString());
+		System.out.println("-------------------------清缓存---------------------------------");
 	}
 
 	/**

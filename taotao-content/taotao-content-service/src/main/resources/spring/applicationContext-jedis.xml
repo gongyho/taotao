@@ -16,7 +16,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd
 http://code.alibabatech.com/schema/dubbo 
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 	<!-- 加载配置文件  测试用-->
-	<context:property-placeholder location="classpath*:properties/*.properties" />
+	<!-- <context:property-placeholder location="classpath*:properties/*.properties" /> -->
 	<!-- 单机 -->
 	<!-- <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
 		<constructor-arg name="host" value="${jedis.host}"/>
@@ -56,7 +56,6 @@ http://code.alibabatech.com/schema/dubbo
 							<constructor-arg name="host" value="${jedis_cluster6.host}"/>
 							<constructor-arg name="port" value="${jedis_cluster6.port}"/>
 						</bean>
-						
 					</set>
 				</constructor-arg>
 			</bean>
