@@ -18,20 +18,19 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://code.alibabatech.com/schema/dubbo 
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-
+	<!-- 配置文件加载 -->
+	<context:property-placeholder location="classpath*:properties/*.properties"/>
+	
+	<!-- 配置注解驱动 支持json数据的响应 -->
+	<mvc:annotation-driven />
+	
 	<!-- 注解包扫描 -->
 	<context:component-scan
-		base-package="com.taotao.controller" />
+		base-package="com.taotao.search.controller" />
 
 	<!-- 配置注解驱动 支持json数据的响应 -->
 	<mvc:annotation-driven />
 	
-	<!-- 文件上传解析器 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="defaultEncoding" value="UTF-8"/>
-		<!-- 设置文件大小 -->
-		<property name="maxUploadSize" value="8388608"/>
-	</bean>
 	
 	<!-- 视图解析器 -->
 	<bean
@@ -39,19 +38,11 @@
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-	<!-- 资源映射 -->
-	<mvc:resources location="/WEB-INF/js/" mapping="/js/**"></mvc:resources>
-	<mvc:resources location="/WEB-INF/css/" mapping="/css/**"></mvc:resources>
 	
 	<!-- 引入dubbo服务 -->
-	<dubbo:application name="taotao-manager-web"/>
+	<dubbo:application name="taotao-search-web"/>
 	<dubbo:registry protocol="zookeeper" address="192.168.37.132:2181"/>
 	<!-- id 要为接口的名字 首字母小写 -->
-	<dubbo:reference interface="com.taotao.service.TestService" id="testService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.ItemService" id="itemService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.ItemCatService" id="itemCatService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.PictureService" id="pictureService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.ContentCategortyService" id="contentCategortyService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.ContentService" id="contentService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.search.service.SearchService" id="searchService" timeout="1000000"/>
+	<!-- <dubbo:reference interface="com.taotao.service.TestService" id="testService"/> -->
+
 </beans>

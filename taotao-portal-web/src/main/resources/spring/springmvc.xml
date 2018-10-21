@@ -38,6 +38,6 @@
 	<dubbo:application name="taotao-portal-web"/>
 	<dubbo:registry protocol="zookeeper" address="192.168.37.132:2181"/>
 	<!-- id 要为接口的名字 首字母小写 -->
-	<dubbo:reference interface="com.taotao.service.ContentService" id="contentService"/>
+	<dubbo:reference interface="com.taotao.service.ContentService" id="contentService" timeout="5000"/>
 	
 </beans>
