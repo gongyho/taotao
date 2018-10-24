@@ -45,13 +45,13 @@
 	
 	<!-- 引入dubbo服务 -->
 	<dubbo:application name="taotao-manager-web"/>
-	<dubbo:registry protocol="zookeeper" address="192.168.37.132:2181"/>
+	<dubbo:registry protocol="zookeeper" address="yhoo.fun:2181,yhoo.fun:2182,yhoo.fun:2183"/>
 	<!-- id 要为接口的名字 首字母小写 -->
-	<dubbo:reference interface="com.taotao.service.TestService" id="testService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.ItemService" id="itemService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.ItemCatService" id="itemCatService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.PictureService" id="pictureService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.ContentCategortyService" id="contentCategortyService" timeout="5000"/>
-	<dubbo:reference interface="com.taotao.service.ContentService" id="contentService" timeout="5000"/>
+	<dubbo:reference interface="com.taotao.service.TestService" id="testService" timeout="10000"/>
+	<dubbo:reference interface="com.taotao.service.ItemService" id="itemService" timeout="10000"/>
+	<dubbo:reference interface="com.taotao.service.ItemCatService" id="itemCatService" timeout="10000"/>
+	<dubbo:reference interface="com.taotao.service.PictureService" id="pictureService" timeout="60000"/>
+	<dubbo:reference interface="com.taotao.service.ContentCategortyService" id="contentCategortyService" timeout="10000"/>
+	<dubbo:reference interface="com.taotao.service.ContentService" id="contentService" timeout="10000"/>
 	<dubbo:reference interface="com.taotao.search.service.SearchService" id="searchService" timeout="1000000"/>
 </beans>

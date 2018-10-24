@@ -6,7 +6,7 @@ import com.taotao.common.pojo.SearchItem;
 
 public interface SearchMapper {
 	/**
-	 * 查询所有的item
+	 *	 查询所有的item
 	 * @return
 	 */
 	List<SearchItem> searchAllItem();

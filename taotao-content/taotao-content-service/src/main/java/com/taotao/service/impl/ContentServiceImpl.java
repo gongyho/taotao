@@ -106,7 +106,6 @@ public class ContentServiceImpl implements ContentService{
 			e1.printStackTrace();
 		}
 		
-		
 		TbContentExample example=new TbContentExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andCategoryIdEqualTo(categoryId);

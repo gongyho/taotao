@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://code.alibabatech.com/schema/dubbo 
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+     <!-- <bean id="solrClientBuilder" class="org.apache.solr.client.solrj.impl.HttpSolrClient.Builder" >
+    	<constructor-arg name="baseSolrUrl" value="${SOLR_BASE_URL}"/>
+    </bean> -->
+    <bean id="builder" class="org.apache.solr.client.solrj.impl.CloudSolrClient.Builder">
+    	<constructor-arg name="solrUrls">
+    		<list>
+    			<value>http://yhoo.fun:8180/solr</value>
+    			<value>http://yhoo.fun:8280/solr</value>
+    			<value>http://yhoo.fun:8380/solr</value>
+    			<value>http://yhoo.fun:8480/solr</value>
+    		</list>
+    	</constructor-arg>
+    </bean>
+    <bean id="solrClient" class="org.apache.solr.client.solrj.SolrClient" factory-bean="builder" factory-method="build">
+    </bean>
+</beans>

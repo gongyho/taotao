@@ -41,8 +41,8 @@
 	
 	<!-- 引入dubbo服务 -->
 	<dubbo:application name="taotao-search-web"/>
-	<dubbo:registry protocol="zookeeper" address="192.168.37.132:2181"/>
+	<dubbo:registry protocol="zookeeper" address="yhoo.fun:2181,yhoo.fun:2182,yhoo.fun:2183"/>
 	<!-- id 要为接口的名字 首字母小写 -->
-	<!-- <dubbo:reference interface="com.taotao.service.TestService" id="testService"/> -->
+	<dubbo:reference interface="com.taotao.search.service.SearchService" id="searchService" timeout="5000"/>
 
 </beans>
