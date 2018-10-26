@@ -8,6 +8,7 @@ package com.taotao.service;
 import com.taotao.common.pojo.EasyUiDatagridResult;
 import com.taotao.common.pojo.TaotaoResult;
 import com.taotao.pojo.TbItem;
+import com.taotao.pojo.TbItemDesc;
 
 public interface ItemService {
 	/**
@@ -22,4 +23,16 @@ public interface ItemService {
 	 *  	添加商品
 	 */
 	TaotaoResult addItem(TbItem item,String desc);
+	
+	/**
+	 * 根据id查询商品
+	 */
+	TbItem getItemById(Long id);
+	
+	/**
+	 * 根据商品id查询详情
+	 * @param id
+	 * @return
+	 */
+	TbItemDesc getDescById(Long id);
 }

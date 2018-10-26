@@ -91,4 +91,19 @@ public class ItemServiceImpl implements ItemService {
 		
 		return TaotaoResult.ok();
 	}
+	
+	/**
+	 * 根据商品id查询商品详情
+	 */
+	public TbItem getItemById(Long id) {
+		return tbItemMapper.selectByPrimaryKey(id);
+	}
+	
+	
+	/**
+	 * 根据商品id查询商品描述
+	 */
+	public TbItemDesc getDescById(Long id) {
+		return tbItemDescMapper.selectByPrimaryKey(id);
+	}
 }
