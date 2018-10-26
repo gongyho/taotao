@@ -1,5 +1,6 @@
 package com.taotao.service.impl;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -10,15 +11,18 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.taotao.common.jedis.JedisClient;
 import com.taotao.common.pojo.EasyUiDatagridResult;
 import com.taotao.common.pojo.TaotaoResult;
 import com.taotao.common.utils.IDUtil;
+import com.taotao.common.utils.JsonUtils;
 import com.taotao.mapper.TbItemDescMapper;
 import com.taotao.mapper.TbItemMapper;
 import com.taotao.pojo.TbItem;
@@ -40,6 +44,14 @@ public class ItemServiceImpl implements ItemService {
 	private JmsTemplate jmsTemplate;
 	@Resource(name="itemChangeTopic")
 	private Destination itemChangeTopic;
+	@Autowired
+	private JedisClient jedisClient;
+	@Value("${ITEM_KEY}")
+	private String ITEM_KEY;
+	@Value("${ITEM_DESC_KEY}")
+	private String ITEM_DESC_KEY;
+	@Value("${KEY_EXPIRE}")
+	private Integer KEY_EXPIRE;
 	
 	/**
 	 * 	根据页码和每页记录数查询商品
@@ -93,10 +105,34 @@ public class ItemServiceImpl implements ItemService {
 	}
 	
 	/**
-	 * 根据商品id查询商品详情
+	 * 根据商品id查询商品
 	 */
 	public TbItem getItemById(Long id) {
-		return tbItemMapper.selectByPrimaryKey(id);
+		String item_key=MessageFormat.format(ITEM_KEY, id.toString());
+		try {
+			//搜索缓存
+			if(jedisClient.exists(item_key)) {
+				String json = jedisClient.get(item_key);
+				System.out.println("缓存取商品--------------------------"+item_key);
+				return JsonUtils.jsonToPojo(json,TbItem.class);
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		//查询数据库
+		TbItem tbItem = tbItemMapper.selectByPrimaryKey(id);
+		
+		try {
+			//添加缓存
+			jedisClient.set(item_key,JsonUtils.objectToJson(tbItem));
+			//设置过期时间
+			jedisClient.expire(item_key,KEY_EXPIRE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("数据库取商品----------------------------------");
+		return tbItem;
 	}
 	
 	
@@ -104,6 +140,29 @@ public class ItemServiceImpl implements ItemService {
 	 * 根据商品id查询商品描述
 	 */
 	public TbItemDesc getDescById(Long id) {
-		return tbItemDescMapper.selectByPrimaryKey(id);
+		String item_desc_key=MessageFormat.format(ITEM_DESC_KEY, id.toString());
+		//取缓存
+		try {
+			if(jedisClient.exists(item_desc_key)){
+				String json = jedisClient.get(item_desc_key);
+				System.out.println("缓存取详情--------------------------"+item_desc_key);
+				return JsonUtils.jsonToPojo(json, TbItemDesc.class);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		TbItemDesc tbItemDesc = tbItemDescMapper.selectByPrimaryKey(id);
+		
+		//设置缓存
+		try {
+			jedisClient.set(item_desc_key, JsonUtils.objectToJson(tbItemDesc));
+			jedisClient.expire(item_desc_key,KEY_EXPIRE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("数据库取详情----------------------------------");
+		return tbItemDesc;
 	}
 }
