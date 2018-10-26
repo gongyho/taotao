@@ -83,14 +83,14 @@ public class SolrjTest {
 		
 		
 		
-		/*List<String> strs=new ArrayList<String>();
-		strs.add("http://yhoo.fun:8180/solr");
+		List<String> strs=new ArrayList<String>();
 		strs.add("http://yhoo.fun:8280/solr");
 		strs.add("http://yhoo.fun:8380/solr");
-		strs.add("http://yhoo.fun:8480/solr");*/
-		ApplicationContext context=new ClassPathXmlApplicationContext("classpath:spring/applicationContext-solr.xml");
-		SolrClient client =(SolrClient) context.getBean("solrClient");
-		//SolrClient client=new CloudSolrClient.Builder(strs).build();
+		strs.add("http://yhoo.fun:8480/solr");
+		strs.add("http://yhoo.fun:8180/solr");
+		//ApplicationContext context=new ClassPathXmlApplicationContext("classpath:spring/applicationContext-solr.xml");
+		//SolrClient client =(SolrClient) context.getBean("solrClient");
+		SolrClient client=new CloudSolrClient.Builder(strs).build();
 		//SearchItem item=new SearchItem();
 		/*item.setId(123L);
 		item.setCategory_name("中国");
@@ -100,12 +100,12 @@ public class SolrjTest {
 		client.addBean("collection",item);
 		client.commit("collection");
 		client.close();*/
-		SolrQuery query=new SolrQuery();
+		/*SolrQuery query=new SolrQuery();
 		query.setQuery("中国");
 		query.set("df", "item_title");
 		QueryResponse query2 = client.query("collection",query);
 
 		List<SearchItem> beans = query2.getBeans(SearchItem.class);
-		System.out.println(beans.get(0).getId());
+		System.out.println(beans.get(0).getId());*/
 	}
 }

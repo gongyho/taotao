@@ -27,7 +27,11 @@
 			<artifactId>fastdfs-client-java</artifactId>
 			<version>1.27-SNAPSHOT</version>
 		</dependency>
-
+		<!-- activemq -->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+		</dependency>
 		<!-- 文件上传组件 -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>

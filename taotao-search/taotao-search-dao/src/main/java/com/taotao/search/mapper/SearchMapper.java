@@ -10,4 +10,6 @@ public interface SearchMapper {
 	 * @return
 	 */
 	List<SearchItem> searchAllItem();
+	
+	SearchItem selectById(Long id);
 }

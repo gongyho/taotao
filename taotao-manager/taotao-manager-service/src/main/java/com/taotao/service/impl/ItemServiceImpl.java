@@ -3,7 +3,15 @@ package com.taotao.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
@@ -28,6 +36,10 @@ public class ItemServiceImpl implements ItemService {
 	private TbItemMapper tbItemMapper;
 	@Autowired
 	private TbItemDescMapper tbItemDescMapper;
+	@Autowired
+	private JmsTemplate jmsTemplate;
+	@Resource(name="itemChangeTopic")
+	private Destination itemChangeTopic;
 	
 	/**
 	 * 	根据页码和每页记录数查询商品
@@ -51,8 +63,6 @@ public class ItemServiceImpl implements ItemService {
 	 * 添加商品
 	 */
 	public TaotaoResult addItem(TbItem item, String desc) {
-		
-		
 		//设置商品信息
 		Long itemId = IDUtil.generateItemId();
 		//生成订单id
@@ -69,6 +79,15 @@ public class ItemServiceImpl implements ItemService {
 		tbItemDesc.setCreated(new Date());
 		tbItemDesc.setUpdated(new Date());
 		tbItemDescMapper.insertSelective(tbItemDesc);
+		
+		//发布消息
+		jmsTemplate.send(itemChangeTopic, new MessageCreator() {
+			
+			@Override
+			public Message createMessage(Session session) throws JMSException {
+				return session.createTextMessage(itemId.toString());
+			}
+		});
 		
 		return TaotaoResult.ok();
 	}
