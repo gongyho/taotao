@@ -1,8 +1,10 @@
 package com.taotao.common.utils;
 
+import java.lang.annotation.Retention;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * 生成id的工具类
@@ -33,5 +35,12 @@ public class IDUtil {
 	public static Long generateItemId() { 
 		  return new Date().getTime() + new Random().nextInt(99);
 	}
-
+	
+	/**
+	 * 生成uuid
+	 * @return
+	 */
+	public static String generateUUID() {
+		return UUID.randomUUID().toString().replace("-", "");
+	}
 }

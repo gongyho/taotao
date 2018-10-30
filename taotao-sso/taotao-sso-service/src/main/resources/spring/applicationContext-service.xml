@@ -17,16 +17,18 @@ http://code.alibabatech.com/schema/dubbo
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
     <!-- 加载配置文件 --> 
     <context:property-placeholder location="classpath*:properties/*.properties"/>
+   <!--  <context:property-placeholder location="classpath:properties/fastdfs.properties"/> -->
 	<!-- 包扫描 -->
-	<context:component-scan base-package="com.taotao.search.service"/>
+	<context:component-scan base-package="com.taotao.sso.service"/>
 	
 	<!-- 使用dubbo发布服务 -->	
 	<!-- 提供方信息，name：是服务提供方的名字 用来计算依赖关系 计算依赖调用次数 -->
-	<dubbo:application name="taotao-search"/>
+	<dubbo:application name="taotao-sso"/>
 	<dubbo:registry protocol="zookeeper" address="yhoo.fun:2181,yhoo.fun:2182,yhoo.fun:2183"/>
 	<!-- 使用dubbo协议再20880暴露服务 在本机 -->
-	<dubbo:protocol name="dubbo" port="20882"/>
+	<dubbo:protocol name="dubbo" port="20883"/>
 	
 	<!-- 声明要暴露的服务 -->
-	<dubbo:service interface="com.taotao.search.service.SearchService" ref="searchServiceImpl"/>
+	<dubbo:service interface="com.taotao.sso.service.UserRegisteServcie" ref="userRegisteServiceImpl"/>
+	<dubbo:service interface="com.taotao.sso.service.UserLoginService" ref="userLoginServviceImpl"/>
 </beans>
